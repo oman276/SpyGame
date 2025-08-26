@@ -1,0 +1,62 @@
+[gd_scene load_steps=8 format=3 uid="uid://cb73rn57x2dby"]
+
+[ext_resource type="Script" uid="uid://c4cj7nl0oo3v5" path="res://scripts/player.gd" id="1_ggdjh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ib2t7"]
+
+[sub_resource type="Gradient" id="Gradient_rqf4l"]
+colors = PackedColorArray(1, 0, 0, 1, 1, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_rwyfs"]
+gradient = SubResource("Gradient_rqf4l")
+
+[sub_resource type="Gradient" id="Gradient_3vyb7"]
+offsets = PackedFloat32Array(0, 0.493088, 1)
+colors = PackedColorArray(0, 0.639216, 0.682353, 1, 2.21401e-06, 0.638011, 0.68315, 1, 0, 0.639216, 0.682353, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_g2els"]
+gradient = SubResource("Gradient_3vyb7")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3vyb7"]
+radius = 144.838
+
+[node name="Player" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_ggdjh")
+speed = 650.0
+acceleration = 5000.0
+friction = 2400.0
+dodge_friction = 5000.0
+dodge_friction_sprinting = 6666.0
+dodge_speed_multiplier = 3.0
+dodge_speed_sprint_multiplier = 4.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(2, 2)
+shape = SubResource("RectangleShape2D_ib2t7")
+
+[node name="Sprite2D" type="Sprite2D" parent="CollisionShape2D"]
+position = Vector2(-1.19209e-07, 0.5)
+scale = Vector2(0.078125, 21)
+texture = SubResource("GradientTexture1D_rwyfs")
+
+[node name="DodgeTimer" type="Timer" parent="."]
+
+[node name="HoldRotator" type="Node2D" parent="."]
+
+[node name="HoldPoint" type="Node2D" parent="HoldRotator"]
+position = Vector2(61, 0)
+
+[node name="Debug Visibility Sprite" type="Sprite2D" parent="HoldRotator/HoldPoint"]
+scale = Vector2(0.069, 15)
+texture = SubResource("GradientTexture1D_g2els")
+
+[node name="Item Detection Zone" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item Detection Zone"]
+shape = SubResource("CircleShape2D_3vyb7")
+
+[connection signal="timeout" from="DodgeTimer" to="." method="_on_dodge_timer_timeout"]

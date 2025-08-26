@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://o2a7yfw5oydd"]
+
+[ext_resource type="Script" uid="uid://ddpews8jotmh7" path="res://scripts/systems/mouse_reticle.gd" id="1_5mnro"]
+
+[sub_resource type="Gradient" id="Gradient_nabqm"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_5mnro"]
+gradient = SubResource("Gradient_nabqm")
+
+[node name="MouseReticle" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_5mnro")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 1
+scale = Vector2(0.089, 20)
+texture = SubResource("GradientTexture1D_5mnro")
