@@ -85,10 +85,34 @@ func _dodge():
 	dodge_timer.start(dodge_duration_sprinting if is_sprinting() else dodge_duration)
 
 func _pick_up():
-	print("pick up")
+	var item = _pop_pickup_from_list()
+	if item != null:
+		if held_object != null:
+			_drop()
+			await get_tree().process_frame
+		held_object = item
+		held_object.pick_up()
 
-func _drop():
-	print("drop")
+		if held_object.get_parent() != null:
+			get_parent().remove_child(held_object)
+		HoldPoint.add_child(held_object)
+		held_object.global_position = HoldPoint.global_position
+		held_object.rotation = 0
+		print("picked up item ", item.name)
+
+func _drop() -> Node2D:
+	if held_object != null:
+		HoldPoint.remove_child(held_object)
+		get_parent().add_child(held_object)
+		held_object.global_position = HoldPoint.global_position
+		held_object.rotation = 0
+		print("dropped item ", held_object.name)
+		held_object.drop()
+		var original_held = held_object
+		held_object = null
+		return original_held
+	return null
+
 
 func _add_pickup_to_list(pickup: Pickup):
 	held_object_list.append(pickup)
@@ -116,3 +140,17 @@ func _update_next_pickup():
 	elif item == null and next_held_object != null:
 		next_held_object.next_to_pick_up(false)
 		next_held_object = null
+
+func _on_item_detection_zone_body_entered(body:Node2D):
+	var pickup = body.get_parent()
+	if pickup is Pickup:
+		print(pickup.name, "has entered zone")
+		_add_pickup_to_list(pickup)
+		_update_next_pickup()
+
+func _on_item_detection_zone_body_exited(body:Node2D):
+	var pickup = body.get_parent()
+	if pickup is Pickup:
+		print(pickup.name, "has exited zone")
+		_remove_pickup_from_list(pickup)
+		_update_next_pickup()

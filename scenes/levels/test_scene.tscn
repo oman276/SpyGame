@@ -23,5 +23,5 @@ target = NodePath("../Player")
 target_is_physics = true
 smoothing_speed = 1.0
 
-[node name="BasePickup" parent="." instance=ExtResource("4_ad8uc")]
+[node name="BasePickupTest" parent="." instance=ExtResource("4_ad8uc")]
 position = Vector2(770, 453)
