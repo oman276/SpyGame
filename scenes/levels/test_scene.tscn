@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=4 uid="uid://sp6iihbi4d2"]
+[gd_scene load_steps=8 format=4 uid="uid://sp6iihbi4d2"]
 
 [ext_resource type="PackedScene" uid="uid://cb73rn57x2dby" path="res://scenes/player.tscn" id="1_r1tii"]
 [ext_resource type="TileSet" uid="uid://b5eudkhu32i6j" path="res://assets/temp/test_scene.tres" id="2_bfhv8"]
 [ext_resource type="Script" uid="uid://caxlowowvpjcy" path="res://scripts/systems/camera.gd" id="3_kljt5"]
 [ext_resource type="PackedScene" uid="uid://n7wonoyglswl" path="res://scenes/pickups/base_pickup.tscn" id="4_ad8uc"]
 [ext_resource type="PackedScene" uid="uid://hstgjgvhromp" path="res://scenes/pickups/throwable_pickup.tscn" id="5_nd4bu"]
+[ext_resource type="Script" uid="uid://di22q78hrlyc3" path="res://scripts/systems/nav_point_manager.gd" id="6_06sp8"]
 [ext_resource type="PackedScene" uid="uid://dw5mql02yewr" path="res://scenes/enemies/base_enemy.tscn" id="6_joecx"]
 
 [node name="TestScene" type="Node2D"]
@@ -32,15 +33,22 @@ position = Vector2(770, 453)
 position = Vector2(539, 589)
 
 [node name="NavigationPoints" type="Node2D" parent="."]
+script = ExtResource("6_06sp8")
 
 [node name="1" type="Node2D" parent="NavigationPoints"]
-position = Vector2(442, 282)
+position = Vector2(818, 118)
 
 [node name="2" type="Node2D" parent="NavigationPoints"]
-position = Vector2(891, 280)
+position = Vector2(476, 118)
 
-[node name="BaseEnemy" parent="." instance=ExtResource("6_joecx")]
+[node name="3" type="Node2D" parent="NavigationPoints"]
+position = Vector2(476, 518)
+
+[node name="4" type="Node2D" parent="NavigationPoints"]
+position = Vector2(827, 518)
+
+[node name="BaseEnemy" parent="." node_paths=PackedStringArray("nav_manager") instance=ExtResource("6_joecx")]
 position = Vector2(821, 277)
 scale = Vector2(2, 2)
 base_movement_speed = 50.0
-patrol_points = Array[Vector2]([Vector2(259, 79.3333), Vector2(155.333, 79.3333)])
+nav_manager = NodePath("../NavigationPoints")

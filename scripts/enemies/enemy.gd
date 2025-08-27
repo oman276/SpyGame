@@ -10,22 +10,30 @@ enum EnemyState {
 
 @export var base_movement_speed = 10.0
 @export var chase_speed_multiplier = 2.5
-@export var patrol_points : Array[Vector2]
+var patrol_points : Array[Vector2]
 @export var current_patrol_index : int = 0
 
 var current_state : EnemyState
 @export var initial_state = EnemyState.PATROLLING
 
 @onready var nav_agent = $NavigationAgent2D
+@export var nav_manager : NavPointManager
 
 func _ready():
 	current_state = initial_state
-	var target = patrol_points[current_patrol_index]
-	nav_agent.set_target_position(target)
+
+	if nav_manager != null:
+		print("assigning nav_manager")
+		patrol_points = nav_manager.get_points()
+
+	if patrol_points.size() > 0:
+		print("setting initial target position")
+		var target = patrol_points[current_patrol_index]
+		nav_agent.set_target_position(target)
 	
 func _physics_process(_delta: float) -> void:
 	if nav_agent.is_navigation_finished():
-		print("Reached target position")
+		# print("Reached target position on ", current_patrol_index)
 		make_path()
 		return
 	var direction = to_local(nav_agent.get_next_path_position()).normalized()

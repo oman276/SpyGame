@@ -7,7 +7,6 @@
 
 [node name="BaseEnemy" type="CharacterBody2D"]
 script = ExtResource("1_qf3h2")
-patrol_points = Array[Vector2]([Vector2(0, 0)])
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_qf3h2")
