@@ -49,6 +49,7 @@ texture = SubResource("GradientTexture1D_rwyfs")
 position = Vector2(61, 0)
 
 [node name="Debug Visibility Sprite" type="Sprite2D" parent="HoldRotator/HoldPoint"]
+visible = false
 scale = Vector2(0.069, 15)
 texture = SubResource("GradientTexture1D_g2els")
 

@@ -5,22 +5,20 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2xend"]
 
 [sub_resource type="Gradient" id="Gradient_2xend"]
-colors = PackedColorArray(0, 1, 0, 1, 0, 1, 0, 1)
+colors = PackedColorArray(1, 1, 0, 1, 1, 1, 0, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_uog1a"]
 gradient = SubResource("Gradient_2xend")
 
-[node name="BasePickup" type="Node2D"]
-script = ExtResource("1_uog1a")
-
-[node name="RigidBody2D" type="RigidBody2D" parent="."]
+[node name="BasePickup" type="RigidBody2D"]
 collision_layer = 3
 collision_mask = 3
 gravity_scale = 0.0
+script = ExtResource("1_uog1a")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_2xend")
 
-[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D/CollisionShape2D"]
+[node name="Sprite2D" type="Sprite2D" parent="CollisionShape2D"]
 scale = Vector2(0.076, 20)
 texture = SubResource("GradientTexture1D_uog1a")

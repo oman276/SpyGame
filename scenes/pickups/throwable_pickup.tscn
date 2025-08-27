@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://hstgjgvhromp"]
+
+[ext_resource type="PackedScene" uid="uid://n7wonoyglswl" path="res://scenes/pickups/base_pickup.tscn" id="1_n0253"]
+[ext_resource type="Script" uid="uid://calog6tlv3l40" path="res://scripts/pickups/throwable.gd" id="2_dmg1c"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_dmg1c"]
+friction = 0.8
+bounce = 0.2
+
+[node name="ThrowablePickup" instance=ExtResource("1_n0253")]
+physics_material_override = SubResource("PhysicsMaterial_dmg1c")
+script = ExtResource("2_dmg1c")
+throw_force = 1000.0
