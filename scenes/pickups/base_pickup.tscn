@@ -1,25 +1,24 @@
-[gd_scene load_steps=4 format=3 uid="uid://n7wonoyglswl"]
+[gd_scene load_steps=5 format=3 uid="uid://n7wonoyglswl"]
+
+[ext_resource type="Script" uid="uid://bp5yt2xt0r5u6" path="res://scripts/pickups/pickup.gd" id="1_uog1a"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2xend"]
 
 [sub_resource type="Gradient" id="Gradient_2xend"]
-colors = PackedColorArray(0, 1, 0, 1, 0, 1, 0, 1)
+colors = PackedColorArray(1, 1, 0, 1, 1, 1, 0, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_uog1a"]
 gradient = SubResource("Gradient_2xend")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2xend"]
-size = Vector2(73, 77)
-
-[node name="BasePickup" type="Node2D"]
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.265, 70)
-texture = SubResource("GradientTexture1D_uog1a")
-
-[node name="RigidBody2D" type="RigidBody2D" parent="."]
+[node name="BasePickup" type="RigidBody2D"]
 collision_layer = 3
 collision_mask = 3
 gravity_scale = 0.0
+script = ExtResource("1_uog1a")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
-position = Vector2(0.5, 1.5)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_2xend")
+
+[node name="Sprite2D" type="Sprite2D" parent="CollisionShape2D"]
+scale = Vector2(0.076, 20)
+texture = SubResource("GradientTexture1D_uog1a")

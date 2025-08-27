@@ -69,3 +69,9 @@ func _force_load_level(level: Levels):
 		current_level_node = scene.instantiate()
 		add_child(current_level_node)
 	loading_canvas.fade_out()
+
+func mouse_visible(set_visible: bool) -> void:
+	if set_visible:
+		mouse_reticle.visible = true
+	else:
+		mouse_reticle.visible = false
