@@ -6,6 +6,7 @@ enum EnemyState {
 	PATROLLING,
 	CHASING,
 	SEARCHING,
+	INVESTIGATING
 }
 
 @export var base_movement_speed = 10.0
@@ -19,21 +20,53 @@ var current_state : EnemyState
 @onready var nav_agent = $NavigationAgent2D
 @export var nav_manager : NavPointManager
 
+@export var search_target : Node2D
+var target_last_known_position : Vector2
+
+@onready var re_path_timer : Timer = $RePathTimer
+@export var timer_reset_time : float = 0.2
+
 func _ready():
 	current_state = initial_state
 
-	if nav_manager != null:
-		print("assigning nav_manager")
-		patrol_points = nav_manager.get_points()
+	match initial_state:
+		EnemyState.PATROLLING:
+			if nav_manager != null:
+				patrol_points = nav_manager.get_points()
+				if patrol_points.size() > 0:
+					var target = patrol_points[current_patrol_index]
+					nav_agent.set_target_position(target)
+		EnemyState.CHASING:
+			if search_target != null:
+				nav_agent.set_target_position(search_target.global_position)
 
-	if patrol_points.size() > 0:
-		print("setting initial target position")
-		var target = patrol_points[current_patrol_index]
-		nav_agent.set_target_position(target)
-	
+	re_path_timer.start(timer_reset_time)
+
+func change_state(new_state : EnemyState):
+	if new_state == current_state:
+		return
+	print("Changing state from ", str(current_state), " to ", str(new_state))
+	current_state = new_state
+	match new_state:
+		EnemyState.PATROLLING:
+			if patrol_points.size() > 0:
+				var target = patrol_points[current_patrol_index]
+				nav_agent.set_target_position(target)
+		EnemyState.CHASING:
+			if search_target != null:
+				nav_agent.set_target_position(search_target.global_position)
+		EnemyState.SEARCHING:
+			if search_target != null:
+				target_last_known_position = search_target.global_position
+				nav_agent.set_target_position(target_last_known_position)
+		EnemyState.IDLE:
+			# do nothing, we don't need to set a position
+			pass
+
 func _physics_process(_delta: float) -> void:
+	if current_state == EnemyState.IDLE:
+		return
 	if nav_agent.is_navigation_finished():
-		# print("Reached target position on ", current_patrol_index)
 		make_path()
 		return
 	var direction = to_local(nav_agent.get_next_path_position()).normalized()
@@ -51,13 +84,21 @@ func make_path():
 			print("making new path on index ", current_patrol_index)
 			var target = patrol_points[current_patrol_index]
 			nav_agent.set_target_position(target)
-		EnemyState.CHASING:
+		EnemyState.CHASING, EnemyState.SEARCHING:
 			# when chasing, we'd want to update the path more frequently: use timer?
-			print("WIP")
-			pass
-		EnemyState.SEARCHING:
-			print("WIP")
-			pass
+			if search_target != null:
+				nav_agent.set_target_position(search_target.global_position)
 		EnemyState.IDLE:
-			print("WIP")
+			# do nothing, we don't need to set a position
 			pass
+
+func _on_re_path_timer_timeout():
+	if current_state == EnemyState.CHASING or current_state == EnemyState.SEARCHING:
+		# print("Recalculating path...")
+		make_path()
+
+func is_object_of_interest(node: Node2D) -> bool:
+	var is_interest = false
+	if node is SpyPlayer:
+		is_interest = true
+	return is_interest

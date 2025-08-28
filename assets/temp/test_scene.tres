@@ -3,10 +3,6 @@
 [ext_resource type="Texture2D" uid="uid://pv38kwdljiu8" path="res://assets/temp/temp_terrain_sprites.png" id="1_s3dc0"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_s3dc0"]
-vertices = PackedVector2Array(1, 1, -1, 1, -1, -1, 1, -1)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-1, -1, 1, -1, 1, 1, -1, 1)])
-agent_radius = 0.0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kljt5"]
 texture = ExtResource("1_s3dc0")

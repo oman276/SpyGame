@@ -3,22 +3,34 @@
 [ext_resource type="Script" uid="uid://ceo7yydewepmj" path="res://scripts/enemies/enemy.gd" id="1_qf3h2"]
 [ext_resource type="Texture2D" uid="uid://c5vs7m06frnff" path="res://assets/temp/temp_enemy.png" id="1_r5xb8"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_qf3h2"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qf3h2"]
 
 [node name="BaseEnemy" type="CharacterBody2D"]
 script = ExtResource("1_qf3h2")
+base_movement_speed = 100.0
+chase_speed_multiplier = 8.0
+initial_state = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_qf3h2")
+shape = SubResource("RectangleShape2D_qf3h2")
 
 [node name="WIP_Sprite" type="Sprite2D" parent="CollisionShape2D"]
 texture_filter = 1
-scale = Vector2(0.505, 0.505)
+position = Vector2(-2.98023e-07, -2.98023e-07)
+scale = Vector2(0.625, 0.625)
 texture = ExtResource("1_r5xb8")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-path_desired_distance = 3.0
+path_desired_distance = 10.0
+target_desired_distance = 20.0
 path_postprocessing = 1
 debug_enabled = true
 debug_use_custom = true
 debug_path_custom_color = Color(0.954458, 3.60981e-06, 1.34766e-06, 1)
+
+[node name="RePathTimer" type="Timer" parent="."]
+wait_time = 0.2
+autostart = true
+ignore_time_scale = true
+
+[connection signal="timeout" from="RePathTimer" to="." method="_on_re_path_timer_timeout"]
