@@ -12,6 +12,7 @@
 vertices = PackedVector2Array(1095, 57, 1095, 519, 903, 519, 729, 441, 729, 135, 57, 57, 551, 135, 441, 519, 57, 519, 551, 441, 903, 871, 441, 871)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4), PackedInt32Array(5, 0, 4, 6), PackedInt32Array(7, 8, 5, 6, 9), PackedInt32Array(3, 2, 10, 11, 7, 9)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(17, 16, 1129, 17, 1131, 558, 949, 559, 954, 921, 398, 932, 387, 587, 26, 581)])
+cell_size = 31.0
 agent_radius = 25.0
 
 [node name="TestScene" type="Node2D"]
@@ -27,7 +28,7 @@ target_is_physics = true
 smoothing_speed = 1.0
 
 [node name="BasePickupTest" parent="." instance=ExtResource("4_ad8uc")]
-position = Vector2(770, 453)
+position = Vector2(822, 795)
 
 [node name="ThrowablePickup" parent="." instance=ExtResource("5_nd4bu")]
 position = Vector2(539, 589)
@@ -36,26 +37,29 @@ position = Vector2(539, 589)
 script = ExtResource("6_06sp8")
 
 [node name="1" type="Node2D" parent="NavigationPoints"]
-position = Vector2(818, 118)
+position = Vector2(818, 89)
 
 [node name="2" type="Node2D" parent="NavigationPoints"]
-position = Vector2(476, 118)
+position = Vector2(497, 86)
 
 [node name="3" type="Node2D" parent="NavigationPoints"]
-position = Vector2(476, 518)
+position = Vector2(492, 524)
 
 [node name="4" type="Node2D" parent="NavigationPoints"]
-position = Vector2(827, 518)
+position = Vector2(806, 540)
 
 [node name="BaseEnemy" parent="." node_paths=PackedStringArray("nav_manager", "search_target") instance=ExtResource("6_joecx")]
 position = Vector2(821, 277)
 scale = Vector2(2, 2)
-initial_state = 2
+chase_speed_multiplier = 6.0
+initial_state = 1
 nav_manager = NodePath("../NavigationPoints")
 search_target = NodePath("../Player")
+sprite_rotation_speed = 4.0
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 navigation_polygon = SubResource("NavigationPolygon_06sp8")
+use_edge_connections = false
 
 [node name="TileMapLayer" type="TileMapLayer" parent="NavigationRegion2D"]
 texture_filter = 1
